@@ -1,0 +1,58 @@
+'use client'
+
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react'
+
+type User = {
+  id: string
+  email: string
+  role: 'admin' | 'assessor' | 'reviewer'
+}
+
+type AuthContextType = {
+  user: User | null
+  login: (email: string, password: string) => Promise<void>
+  logout: () => void
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+type AuthProviderProps = {
+  children: ReactNode
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setUser({ id: '1', email: 'user@example.com', role: 'assessor' })
+    }
+  }, [])
+
+  const login = async (email: string, password: string) => {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    const fakeUser = { id: '1', email, role: 'assessor' as const }
+    setUser(fakeUser)
+    localStorage.setItem('token', 'fake-token')
+  }
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    setUser(null)
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
