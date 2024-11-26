@@ -1,0 +1,46 @@
+'use client'
+
+import React, { useState } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+// Placeholder components for each tab
+const Dashboard = () => <div>Dashboard Content</div>
+const BriefPrivacyAnalysis = () => <div>Brief Privacy Analysis Content</div>
+const PrivacyImpactAssessment = () => <div>Privacy Impact Assessment Content</div>
+const RiskMitigationTable = () => <div>Risk Mitigation Table Content</div>
+
+export default function PrivacyImpactAssessmentTool() {
+  const [activeTab, setActiveTab] = useState('dashboard')
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle>Privacy Impact Assessment Tool</CardTitle>
+        <CardDescription>Manage and conduct privacy impact assessments</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="brief">Brief Analysis</TabsTrigger>
+            <TabsTrigger value="pia">Full PIA</TabsTrigger>
+            <TabsTrigger value="risks">Risks & Mitigations</TabsTrigger>
+          </TabsList>
+          <TabsContent value="dashboard">
+            <Dashboard />
+          </TabsContent>
+          <TabsContent value="brief">
+            <BriefPrivacyAnalysis />
+          </TabsContent>
+          <TabsContent value="pia">
+            <PrivacyImpactAssessment />
+          </TabsContent>
+          <TabsContent value="risks">
+            <RiskMitigationTable />
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
